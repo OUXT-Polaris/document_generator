@@ -1,0 +1,69 @@
+find_package(Doxygen REQUIRED)
+
+function(add_document target)
+    get_property(sourcefiles
+        TARGET ${target}
+        PROPERTY SOURCES)
+        foreach (source ${sourcefiles})
+            set(source_spaces "${source_spaces} ${PROJECT_SOURCE_DIR}/${source}")
+        endforeach ()
+    set(includedirs ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+    file(GLOB_RECURSE headers ${includedirs}/*.h)
+    foreach (h ${headers})
+        set(header_spaces "${header_spaces} ${h}")
+    endforeach ()
+    file(GLOB_RECURSE headers_hh ${includedirs}/*.hh)
+    foreach (h ${headers_hh})
+        set(header_spaces "${header_spaces} ${hh}")
+    endforeach ()
+    file(GLOB_RECURSE headers_hh ${includedirs}/*.hpp)
+    foreach (h ${headers_hpp})
+        set(header_spaces "${header_spaces} ${hpp}")
+    endforeach ()
+    foreach (dir ${includedirs})
+        set(dir_spaces "${dir_spaces} ${dir}")
+    endforeach ()
+    get_property(definitions
+        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PROPERTY COMPILE_DEFINITIONS)
+    foreach (def ${definitions})
+        set(predef_spaces "${predef_spaces} ${def}")
+    endforeach ()
+
+    set(output_path ${CMAKE_CURRENT_BINARY_DIR}/doc/${target})
+
+    file(MAKE_DIRECTORY ${output_path})
+
+    install(DIRECTORY ${output_path}
+        DESTINATION share/${PROJECT_NAME}
+    )
+
+    add_custom_command(
+        OUTPUT  ${output_path}/Doxyfile
+        COMMAND ${CMAKE_COMMAND}
+                -D "DOXYGEN_TEMPLATE=${document_generator_DIR}/Doxyfile.in"
+                -D "DOXY_PROJECT_INPUT=${source_spaces} ${header_spaces}"
+                -D "DOXY_PROJECT_INCLUDE_DIR=${dir_spaces}"
+                -D "DOXY_PROJECT_PREDEFINED=${predef_spaces}"
+                -D "DOXY_PROJECT_STRIP_FROM_PATH=${PROJECT_SOURCE_DIR}"
+                -D "DOXY_DOCUMENTATION_OUTPUT_PATH=${output_path}"
+                -D "DOXY_PROJECT_NAME=${target}"
+                -P "${document_generator_DIR}/doxygen-script.cmake"
+        DEPENDS ${document_generator_DIR}/Doxyfile.in
+                ${output_path}
+        WORKING_DIRECTORY
+                ${output_path}
+        COMMENT "Generating Doxyfile for ${target}")
+
+    add_custom_command(
+        OUTPUT  ${output_path}/index.html
+        COMMAND ${DOXYGEN_EXECUTABLE}
+        DEPENDS ${output_path}/Doxyfile
+        WORKING_DIRECTORY
+                ${output_path}
+        COMMENT "Creating HTML documentation for ${target}")
+
+    add_custom_target("doxygen-${PROJECT_NAME}-${target}" ALL
+        DEPENDS ${output_path}/index.html)
+endfunction()
