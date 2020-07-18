@@ -10,6 +10,9 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>doxygen</depend>
+  <depend>python3-sphinx</depend>
+  <depend>python-sphinx-rtd-theme</depend>
+  <depend>python-docutils</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
