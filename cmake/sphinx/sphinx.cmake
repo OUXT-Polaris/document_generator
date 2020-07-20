@@ -13,6 +13,17 @@ function(add_package_document author)
         "${document_generator_DIR}/sphinx/conf.py.in"
         "${BINARY_BUILD_DIR}/conf.py"
         @ONLY)
+
+    string(REPLACE ";" "," TARGETS "${TARGET_LIST}")
+
+
+    add_custom_target(${PROJECT_NAME}_package_document_index_rst ALL
+        "python3"
+            "${document_generator_DIR}/sphinx/generate_rst.py"
+            "${PROJECT_NAME}"
+            "${TARGETS}"
+            "${CMAKE_CURRENT_SOURCE_DIR}"
+        COMMENT "Building HTML documentation with Sphinx")
         
     add_custom_target(${PROJECT_NAME}_package_document ALL
     ${SPHINX_EXECUTABLE}
@@ -23,7 +34,7 @@ function(add_package_document author)
         "${SPHINX_HTML_DIR}"
     COMMENT "Building HTML documentation with Sphinx")
 
-    message("targets:${TARGET_LIST}")
+    message("targets:${TARGETS}")
     
 
 #    install(DIRECTORY ${BINARY_BUILD_DIR}
