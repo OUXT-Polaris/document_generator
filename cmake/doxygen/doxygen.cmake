@@ -37,10 +37,6 @@ function(add_document target)
 
     file(MAKE_DIRECTORY ${output_path})
 
-#    install(DIRECTORY ${output_path}
-#        DESTINATION share/${PROJECT_NAME}
-#    )
-
     add_custom_command(
         OUTPUT  ${output_path}/doxygen/Doxyfile
         COMMAND ${CMAKE_COMMAND}
@@ -68,4 +64,26 @@ function(add_document target)
 
     add_custom_target("doxygen-${PROJECT_NAME}-${target}" ALL
         DEPENDS ${output_path}/doxygen/index.html)
+
+    set(image_source_dir ${PROJECT_SOURCE_DIR}/img)
+    set(image_dir ${output_path}/${target}/html/images)
+    file(GLOB images_png ${image_source_dir}/*.png)
+    file(GLOB images_jpg ${image_source_dir}/*.jpg)
+    file(GLOB images_jpeg ${image_source_dir}/*.jpeg)
+    message("images : ${images_png} ${images_jpg} ${images_jpeg}")
+    foreach (img ${images_png})
+        file(COPY ${img} DESTINATION ${image_dir})
+        set(image_spaces "${image_spaces} ${img}")
+        message("transport images : ${img}")
+    endforeach ()
+    foreach (img ${images_jpg})
+        file(COPY ${img} DESTINATION ${image_dir})
+        set(image_spaces "${image_spaces} ${img}")
+        message("transport images : ${img}")
+    endforeach ()
+    foreach (img ${images_jpeg})
+        file(COPY ${img} DESTINATION ${image_dir})
+        set(image_spaces "${image_spaces} ${img}")
+        message("transport images : ${img}")
+    endforeach ()
 endfunction()

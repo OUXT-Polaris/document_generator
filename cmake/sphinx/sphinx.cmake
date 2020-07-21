@@ -5,7 +5,7 @@ function(add_package_document author)
     set(SPHINX_CACHE_DIR "${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx/_doctrees")
     set(SPHINX_HTML_DIR "${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx/html")
 
-    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx/_static)
+    file(MAKE_DIRECTORY ${BINARY_BUILD_DIR}/_static)
     
     set(AUTHOR ${author})
 
@@ -16,13 +16,12 @@ function(add_package_document author)
 
     string(REPLACE ";" "," TARGETS "${TARGET_LIST}")
 
-
     add_custom_target(${PROJECT_NAME}_package_document_index_rst ALL
         "python3"
             "${document_generator_DIR}/sphinx/generate_rst.py"
             "${PROJECT_NAME}"
             "${TARGETS}"
-            "${CMAKE_CURRENT_SOURCE_DIR}"
+            "${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx"
         COMMENT "Building HTML documentation with Sphinx")
         
     add_custom_target(${PROJECT_NAME}_package_document ALL
@@ -33,11 +32,8 @@ function(add_package_document author)
         "${CMAKE_CURRENT_SOURCE_DIR}"
         "${SPHINX_HTML_DIR}"
     COMMENT "Building HTML documentation with Sphinx")
-
-    message("targets:${TARGETS}")
     
-
-#    install(DIRECTORY ${BINARY_BUILD_DIR}
-#        DESTINATION share/${PROJECT_NAME}
-#    )
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc
+        DESTINATION share/${PROJECT_NAME}
+    )
 endfunction(add_package_document)
