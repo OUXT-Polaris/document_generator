@@ -22,14 +22,15 @@ function(add_package_document author)
             "${PROJECT_NAME}"
             "${TARGETS}"
             "${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx"
-        COMMENT "Building HTML documentation with Sphinx")
+        COMMENT "Building index.rst for sphinx")
         
     add_custom_target(${PROJECT_NAME}_package_document ALL
+    #WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx
     ${SPHINX_EXECUTABLE}
         -q -b html
         -c "${BINARY_BUILD_DIR}"
         -d "${SPHINX_CACHE_DIR}"
-        "${CMAKE_CURRENT_SOURCE_DIR}"
+        "${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx"
         "${SPHINX_HTML_DIR}"
     COMMENT "Building HTML documentation with Sphinx")
     
