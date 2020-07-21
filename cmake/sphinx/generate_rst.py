@@ -20,7 +20,7 @@ if __name__ == "__main__":
     for target in target_list:
         content_str = "\n"+\
         target + ": documentation_"+target+"_\n\n" +\
-        ".. _documentation_"+target+": ../" + target + "/" + target + "/html/index.html\n"
+        ".. _documentation_"+target+": " + target + "/" + target + "/html/index.html\n"
         rst_string = rst_string + content_str
     
     rst_string = rst_string + "\n" +  indicies_template

@@ -33,7 +33,7 @@ function(add_document target)
         set(predef_spaces "${predef_spaces} ${def}")
     endforeach ()
 
-    set(output_path ${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx/${target})
+    set(output_path ${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx/html/${target})
 
     file(MAKE_DIRECTORY ${output_path})
 
