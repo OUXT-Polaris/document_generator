@@ -25,7 +25,6 @@ function(add_package_document author)
         COMMENT "Building index.rst for sphinx")
         
     add_custom_target(${PROJECT_NAME}_package_document ALL
-    #WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx
     ${SPHINX_EXECUTABLE}
         -q -b html
         -c "${BINARY_BUILD_DIR}"
