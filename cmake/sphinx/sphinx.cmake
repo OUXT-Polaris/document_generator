@@ -31,6 +31,7 @@ function(add_package_document author)
         -d "${SPHINX_CACHE_DIR}"
         "${CMAKE_CURRENT_BINARY_DIR}/doc/sphinx"
         "${SPHINX_HTML_DIR}"
+    DEPENDS ${PROJECT_NAME}_package_document_index_rst
     COMMENT "Building HTML documentation with Sphinx")
     
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc
